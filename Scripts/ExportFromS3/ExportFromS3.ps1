@@ -32,7 +32,11 @@ if (([System.IO.Directory]::GetFiles($downloadDir).Length -ne 0) -or
 
 Add-Type -Path $amazonSdkDllPath
 
-$client=[Amazon.AWSClientFactory]::CreateAmazonS3Client($secretKeyID,$secretAccessKeyID)
+$config = New-Object -TypeName Amazon.S3.AmazonS3Config
+$config.WithServiceUrl("s3-eu-west-1.amazonaws.com") | Out-Null
+$config.WithCommunicationProtocol([Amazon.S3.Model.Protocol]::HTTPS) | Out-Null
+
+$client=[Amazon.AWSClientFactory]::CreateAmazonS3Client($secretKeyID, $secretAccessKeyID, $config)
 
 $listRequest = New-Object -TypeName Amazon.S3.Model.ListObjectsRequest
 $listRequest.WithBucketName($bucketName).WithPrefix($databaseName) | Out-Null
