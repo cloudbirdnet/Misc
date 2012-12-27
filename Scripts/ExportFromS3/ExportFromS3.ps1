@@ -10,7 +10,7 @@ param(
 	$secretAccessKeyID,
 	[parameter(mandatory=$true)]
 	[string]
-	$databaseName,
+	$databaseFolderName,
 	[parameter(mandatory=$true)]
 	[string]
 	$downloadDir,
@@ -39,7 +39,7 @@ $config.WithCommunicationProtocol([Amazon.S3.Model.Protocol]::HTTPS) | Out-Null
 $client=[Amazon.AWSClientFactory]::CreateAmazonS3Client($secretKeyID, $secretAccessKeyID, $config)
 
 $listRequest = New-Object -TypeName Amazon.S3.Model.ListObjectsRequest
-$listRequest.WithBucketName($bucketName).WithPrefix($databaseName) | Out-Null
+$listRequest.WithBucketName($bucketName).WithPrefix($databaseFolderName) | Out-Null
 if ($fromKeyNotInclusive -ne $null){
 	$listRequest.WithMarker($fromKeyNotInclusive) | Out-Null
 }
